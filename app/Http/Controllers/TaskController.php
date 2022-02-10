@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Services\TaskService;
+use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
@@ -15,7 +16,7 @@ class TaskController extends Controller
         $this->_taskService = $taskService;
     }
 
-    public function addTask(Request $request)
+    public function addTask(Request $request): Response
     {
         $rules = array(
             'label' => ['required', 'string', 'max:191'],
@@ -32,7 +33,7 @@ class TaskController extends Controller
         );
     }
 
-    public function updateTask(Request $request, int $id)
+    public function updateTask(Request $request, int $id): Response
     {
         $rules = array(
             'label' => ['nullable', 'string', 'max:191'],
