@@ -54,7 +54,7 @@ class TaskController extends Controller
             'message' => "Task Updated Successfully",
             'task' => $task,
             ],
-            201
+            200
         );
     }
 }
