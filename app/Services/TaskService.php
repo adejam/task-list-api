@@ -5,13 +5,36 @@ namespace App\Services;
 use App\Task;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\ArrayHelper;
+use DB;
 
 class TaskService
 {
+    public static function canDuplicateTaskCanBeAdded(): bool
+    {
+        $allow_duplicates = DB::table('settings')->where('param', 'allow_duplicates')->first();
+        $allow_duplicates_value = intval($allow_duplicates->value, $base = 10);
+        if ($allow_duplicates_value) {
+            return true;
+        }
+        return false;
+    }
+    
     public function addTask(array $data): Model
     {
         $task = new Task;
-        $task->label = $data['label'];
+        $labelValue = strtolower($data['label']);
+        $existingTask = Task::where('label', $labelValue)->first();
+        if ($existingTask) {
+            if (!$this->canDuplicateTaskCanBeAdded()) {
+                abort(400, 'duplicate task cannot be added due to allow_duplicates settings');
+            } else {
+                $task->label = $labelValue;
+            }
+        } else {
+            $task->label = $labelValue;
+        }
+        
+        
         $task->sort_order = Task::first() ? Task::orderBy('id', 'desc')->first()->id + 1 : 1;
         $task->completed_at = now();
 
@@ -22,6 +45,17 @@ class TaskService
     public function updateTask(array $data, Task $task): Model
     {
         if (ArrayHelper::keyExistAndNotFalse('label', $data)) {
+            $labelValue = strtolower($data['label']);
+            $existingTask = Task::where('label', $labelValue)->first();
+            if ($existingTask && $existingTask->id !== $task->id) {
+                if (!$this->canDuplicateTaskCanBeAdded()) {
+                    abort(400, 'duplicate task cannot be added due to allow_duplicates settings');
+                } else {
+                    $task->label = $labelValue;
+                }
+            } else {
+                $task->label = $labelValue;
+            }
             $task->label = $data['label'];
         }
 
