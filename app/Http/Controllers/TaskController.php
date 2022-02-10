@@ -31,4 +31,29 @@ class TaskController extends Controller
             201
         );
     }
+
+    public function updateTask(Request $request, int $id)
+    {
+        $rules = array(
+            'label' => ['nullable', 'string', 'max:191'],
+            'sort_order' => ['nullable', 'integer'],
+            'task_completed_status' => ['nullable', 'boolean'],
+        );
+
+        $data = request()->validate($rules);
+        
+        $task = Task::find($id);
+        if (!$task) {
+            abort(404, "The page does not exist.");
+        }
+
+        $task = $this->_taskService->updateTask($data, $task);
+        return response(
+            [
+            'message' => "Task Updated Successfully",
+            'task' => $task,
+            ],
+            201
+        );
+    }
 }

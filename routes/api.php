@@ -14,5 +14,6 @@ Route::group(
             }
         );
         Route::post('/add-task', [TaskController::class, 'addTask']);
+        Route::put('/update-task/{id}', [TaskController::class, 'updateTask']);
     }
 );
