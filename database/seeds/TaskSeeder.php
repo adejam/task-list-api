@@ -11,31 +11,26 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tasks')->insert(array(
-            0 => array(
-                'id' => 1,
+        $datas = [
+            [
                 'label' => "Clean",
                 'sort_order' => 1,
-                'completed_at' => now(),
-            ),
-            1 => array(
-                'id' => 2,
-                'label' => 'Wash',
+            ],
+            [
+                'label' => "Wash do",
                 'sort_order' => 2,
-                'completed_at' => now(),
-            ),
-            2 => array(
-                'id' => 3,
-                'label' => 'do the Laundry',
+            ],
+            [
+                'label' => "Rub",
                 'sort_order' => 3,
-                'completed_at' => now(),
-            ),
-            3 => array(
-                'id' => 4,
-                'label' => 'Wash the car',
-                'sort_order' => 4,
-                'completed_at' => now(),
-            ),
-        ));
+            ],
+            ];
+        foreach ($datas as $data) {
+            DB::table('tasks')->insert([
+            'label' => $data['label'],
+            'sort_order' => $data['sort_order'],
+            'completed_at' => now(),
+        ]);
+        }
     }
 }
