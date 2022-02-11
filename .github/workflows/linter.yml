@@ -18,7 +18,7 @@ jobs:
       - name: Install required dependency for Composer
         uses: php-actions/composer@v4
         with:
-          php_version: 7.2.5
+          php_version: 7.4
           composer_version: 1
           args: --profile --ignore-platform-reqs  --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Composer Report

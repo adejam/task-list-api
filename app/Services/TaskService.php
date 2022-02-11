@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Task;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\ArrayHelper;
-use DB;
+use App\Setting;
 
 class TaskService
 {
@@ -17,7 +17,7 @@ class TaskService
      */
     public static function canDuplicateTaskCanBeAdded(): bool
     {
-        $allow_duplicates = DB::table('settings')->where('param', 'allow_duplicates')->first();
+        $allow_duplicates = Setting::where('param', 'allow_duplicates')->first();
         $allow_duplicates_value = intval($allow_duplicates->value, $base = 10);
         if ($allow_duplicates_value) {
             return true;
