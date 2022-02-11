@@ -9,6 +9,12 @@ use DB;
 
 class TaskService
 {
+    /**
+     * This method checks for the allow_duplicates settings based on if the current settings allows creating more
+     * than one task with the same label
+     *
+     * @return bool // returns true or false depending on the value of allow_duplicates
+     */
     public static function canDuplicateTaskCanBeAdded(): bool
     {
         $allow_duplicates = DB::table('settings')->where('param', 'allow_duplicates')->first();
@@ -19,6 +25,14 @@ class TaskService
         return false;
     }
     
+    /**
+     * This method adds a task to the database. It takes is the validated data from controller and returns the model instance
+     * of the task created
+     *
+     * @param array $data // array of validated data to be added
+     *
+     * @return Illuminate\Database\Eloquent\Model // model instance of the task added.
+     */
     public function addTask(array $data): Model
     {
         $task = new Task;
@@ -41,7 +55,16 @@ class TaskService
         $task->save();
         return $task;
     }
-
+    
+    /**
+     * This method updates an existing task to the database. It takes is the validated data and task to be updated as params
+     *  from controller and returns  the model instance of the task updated
+     *
+     * @param array $data // array of validated data to be added
+     * @param Task  $task // task model to be updated
+     *
+     * @return Illuminate\Database\Eloquent\Model // model instance of the task updated.
+     */
     public function updateTask(array $data, Task $task): Model
     {
         if (ArrayHelper::keyExistAndNotFalse('label', $data)) {

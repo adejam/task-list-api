@@ -15,7 +15,16 @@ class TaskController extends Controller
     {
         $this->_taskService = $taskService;
     }
-
+    
+    /**
+     * This controller method adds a new task. It takes in the http request as param and returns a HTTP response with status code,
+     * message and the Model object created
+     *
+     * @param \Illuminate\Http\Request $request // Request coming from endpoint
+     *
+     * @return Illuminate\Http\Response // response returned which include the status code,
+     * message and the Model object created
+     */
     public function addTask(Request $request): Response
     {
         $rules = array(
@@ -33,6 +42,16 @@ class TaskController extends Controller
         );
     }
 
+    /**
+     * This controller method updates an existing task. It takes in the http request as param and returns a
+     * HTTP response with status code, message and the Model object created.
+     *
+     * @param \Illuminate\Http\Request $request // Request coming from endpoint
+     * @param int                      $id      // This is the ID of the task to be updated
+     *
+     * @return Illuminate\Http\Response // response returned which include the status code,
+     * message and the Model object created
+     */
     public function updateTask(Request $request, int $id): Response
     {
         $rules = array(
