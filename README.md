@@ -121,3 +121,41 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
             ```
         - can also throw validation errors `422` error based on the attributes of the parameters.
 
+
+## Setup the project locally (Running locally)
+
+-   Clone the project
+
+```bash
+git clone https://github.com/adejam/task-list-api.git
+
+```
+
+-   Install Dependencies
+
+```bash
+composer install
+```
+
+- Setup Database and migrate tables with seeders
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+- To Run tests
+```bash
+vendor/bin/phpunit
+```
+
+To check for errors on PHP
+
+```bash
+composer phpcs
+```
+
+Or to beautify PHP codes and fix phpcs errors
+
+```bash
+composer phpcbf
+```
