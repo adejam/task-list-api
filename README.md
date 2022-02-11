@@ -1,72 +1,161 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Task List API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+This projects serves as the API endpoint for a task list project. The project serves as a task management application.
+The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokuapp.com/api/). The App features two tables,
 
-## About Laravel
+- `Tasks` table which holds tasks data.
+- `Settings` table which determines somen behaviours in the application. Like the `allow_duplicates` settings determines whether a task can have duplicate labels, presently this setting is set to `false` which means the application won't allow duplicate labels. 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Get a list of Task which can be based on `allow_duplicates` setting.
+- Create a task
+- update a task label based on `allow_duplicates` setting.
+- update task sort order
+- update task completed time
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## API Endpoint Documentation
 
-## Learning Laravel
+### `/tasks/get-tasks`: Used to get a list of all tasks from the database
+   - Method: `GET`
+   - Body Params: none.
+   - Query Params: none.
+   - Response:
+        - Success: 
+            ```bash
+                {
+                "tasks": [
+                    {
+                        "id": 1,
+                        "label": "Clean",
+                        "sort_order": 1,
+                        "completed_at": "2022-02-11 06:44:00",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 2,
+                        "label": "Wash do",
+                        "sort_order": 2,
+                        "completed_at": "2022-02-11 06:44:00",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 3,
+                        "label": "Rub",
+                        "sort_order": 3,
+                        "completed_at": "2022-02-11 06:44:00",
+                        "created_at": null,
+                        "updated_at": null
+                    }
+                ]
+            }
+            ```
+   
+###  `/tasks/add-task`: Add a task into the database.
+   - Method: `POST`
+   - Body Params: Only the the `label` parameter is needed in the request to create a task
+        - `label`: Specifies a brief description of the task, cannot have duplicates if `allow_duplicates` setting is `false`.
+            - Attributes: `Required`, `String`, and must not be more than `191` characters.
+        - Response:
+        - On Success: status => `201`,
+            Response body
+            ```bash
+            {
+               "message": "Task Added Successfully",
+                "task": {
+                    "label": "new label 1",
+                    "sort_order": 5,
+                    "completed_at": "2022-02-11 06:20:48",
+                    "updated_at": "2022-02-11 06:20:48",
+                    "created_at": "2022-02-11 06:20:48",
+                    "id": 5
+                }
+            }
+            ```
+        - On Failure due to duplictate: status `400`, 
+            Response Body
+            ```bash
+                {
+                    "message": "duplicate task cannot be added due to allow_duplicates settings"
+                }
+            ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+###  `/tasks/update-task/{id}`: Add a task into the database.
+   - Method: `PUT`
+   - Query Params:
+        - id: Id of the task to be updated.
+   - Body Params:
+        - `label`- Specifies a brief description of the task, cannot have duplicates if `allow_duplicates` setting is `false`.
+            - Attributes: `Nullable`, `String`, and must not be more than `191` characters.
 
-## Laravel Sponsors
+        - `sort_order` - Specifies the index/postion at which the task should be sorted.
+            - Attributes: `Nullable`, and must be an`Integer`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+        - `task_completed_status` - Specifies how a task is being completed, if true then it sets the `completed_at` metadata to current time which specifies the task has been completed. if `false` it sets the `completed_at` metadata to the same time at which the task was created which simplifies that the task have not been completed.
+            - Attributes: `Nullable`, and must be an`boolean`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+        - Response:
+        - On Success: status => `200`,
+            Response body
+            ```bash
+            {
+                "message": "Task Updated Successfully",
+                "task": {
+                    "id": 4,
+                    "label": "new label",
+                    "sort_order": 2,
+                    "completed_at": "2022-02-11 05:38:47",
+                    "created_at": "2022-02-11 05:32:09",
+                    "updated_at": "2022-02-11 05:38:47"
+            }
+            ```
+        - On Failure due to duplictate: status `400`, 
+            Response Body
+            ```bash
+                {
+                    "message": "duplicate task cannot be added due to allow_duplicates settings"
+                }
+            ```
+        - can also throw validation errors `422` error based on the attributes of the parameters.
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Setup the project locally (Running locally)
 
-## Security Vulnerabilities
+-   Clone the project
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/adejam/task-list-api.git
 
-## License
+```
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   Install Dependencies
+
+```bash
+composer install
+```
+
+- Setup Database and migrate tables with seeders
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+- To Run tests
+```bash
+vendor/bin/phpunit
+```
+
+To check for errors on PHP
+
+```bash
+composer phpcs
+```
+
+Or to beautify PHP codes and fix phpcs errors
+
+```bash
+composer phpcbf
+```
