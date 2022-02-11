@@ -15,6 +15,23 @@ class TaskController extends Controller
     {
         $this->_taskService = $taskService;
     }
+
+    /**
+     * This controller method fetches all tasks in the database.
+     *
+     * @return Illuminate\Http\Response // response returned which include the status code,
+     * message and the Model object created
+     */
+    public function index(): Response
+    {
+        $tasks = Task::get();
+        return response(
+            [
+            'tasks' => $tasks,
+            ],
+            200
+        );
+    }
     
     /**
      * This controller method adds a new task. It takes in the http request as param and returns a HTTP response with status code,

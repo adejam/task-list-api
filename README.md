@@ -23,7 +23,34 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
    - Response:
         - Success: 
             ```bash
-
+                {
+                "tasks": [
+                    {
+                        "id": 1,
+                        "label": "Clean",
+                        "sort_order": 1,
+                        "completed_at": "2022-02-11 06:44:00",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 2,
+                        "label": "Wash do",
+                        "sort_order": 2,
+                        "completed_at": "2022-02-11 06:44:00",
+                        "created_at": null,
+                        "updated_at": null
+                    },
+                    {
+                        "id": 3,
+                        "label": "Rub",
+                        "sort_order": 3,
+                        "completed_at": "2022-02-11 06:44:00",
+                        "created_at": null,
+                        "updated_at": null
+                    }
+                ]
+            }
             ```
    
 ###  `/tasks/add-task`: Add a task into the database.
@@ -92,5 +119,5 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
                     "message": "duplicate task cannot be added due to allow_duplicates settings"
                 }
             ```
-        - can also throw validation errors based on the attributes of the parameters.
+        - can also throw validation errors `422` error based on the attributes of the parameters.
 
