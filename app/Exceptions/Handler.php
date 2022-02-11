@@ -29,10 +29,9 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
-     * @return void
+     * @param \Exception $exception // Exception
      *
-     * @throws \Exception
+     * @return void
      */
     public function report(Exception $exception)
     {
@@ -42,8 +41,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request   // just the request
+     * @param \Exception               $exception // just the Exception
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Exception
