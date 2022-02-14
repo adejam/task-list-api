@@ -75,7 +75,7 @@ class CreateTaskTest extends TestCase
     {
         $task = factory(Task::class)->create(['label' => 'new label']);
         $response = $this->json('POST', 'api/tasks/add-task', ['label' => '  NeW laBel  ']);
-        $response->assertStatus(400);
+        $response->assertStatus(422);
     }
 
     /**

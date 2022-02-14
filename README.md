@@ -74,7 +74,7 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
                 }
             }
             ```
-        - On Failure due to duplictate: status `400`, 
+        - On Failure due to duplictate: status `422`, 
             Response Body
             ```bash
                 {
@@ -112,7 +112,7 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
                     "updated_at": "2022-02-11 05:38:47"
             }
             ```
-        - On Failure due to duplictate: status `400`, 
+        - On Failure due to duplictate: status `422`, 
             Response Body
             ```bash
                 {

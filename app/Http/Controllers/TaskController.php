@@ -24,7 +24,7 @@ class TaskController extends Controller
      */
     public function index(): Response
     {
-        $tasks = Task::get();
+        $tasks = Task::orderBy('sort_order')->get();
         return response(
             [
             'tasks' => $tasks,

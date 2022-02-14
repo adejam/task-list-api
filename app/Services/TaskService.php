@@ -40,7 +40,7 @@ class TaskService
         $existingTask = Task::where('label', $labelValue)->first();
         if ($existingTask) {
             if (!$this->canDuplicateTaskCanBeAdded()) {
-                abort(400, 'duplicate task cannot be added due to allow_duplicates settings');
+                abort(422, 'duplicate task cannot be added due to allow_duplicates settings');
             } else {
                 $task->label = $labelValue;
             }
@@ -72,7 +72,7 @@ class TaskService
             $existingTask = Task::where('label', $labelValue)->first();
             if ($existingTask && $existingTask->id !== $task->id) {
                 if (!$this->canDuplicateTaskCanBeAdded()) {
-                    abort(400, 'duplicate task cannot be added due to allow_duplicates settings');
+                    abort(422, 'duplicate task cannot be added due to allow_duplicates settings');
                 } else {
                     $task->label = $labelValue;
                 }
