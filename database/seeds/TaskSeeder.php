@@ -13,15 +13,15 @@ class TaskSeeder extends Seeder
     {
         $datas = [
             [
-                'label' => "Clean",
+                'label' => "work on backend",
                 'sort_order' => 1,
             ],
             [
-                'label' => "Wash do",
+                'label' => "work on frontend",
                 'sort_order' => 2,
             ],
             [
-                'label' => "Rub",
+                'label' => "work on deployments",
                 'sort_order' => 3,
             ],
             ];
@@ -30,6 +30,8 @@ class TaskSeeder extends Seeder
             'label' => $data['label'],
             'sort_order' => $data['sort_order'],
             'completed_at' => now(),
+            'updated_at' => now(),
+            'created_at' => now()
         ]);
         }
     }
