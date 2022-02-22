@@ -1,14 +1,14 @@
 # Task List API
 
 This projects serves as the API endpoint for a task list project. The project serves as a task management application.
-The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokuapp.com/api/). The App features two tables,
+The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokuapp.com/api/). The App features two database tables,
 
 - `Tasks` table which holds tasks data.
 - `Settings` table which determines somen behaviours in the application. Like the `allow_duplicates` settings determines whether a task can have duplicate labels, presently this setting is set to `false` which means the application won't allow duplicate labels. 
 
 ## Features
 
-- Get a list of Task which can be based on `allow_duplicates` setting.
+- Get a list of Task.
 - Create a task
 - update a task label based on `allow_duplicates` setting.
 - update task sort order
@@ -74,7 +74,7 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
                 }
             }
             ```
-        - On Failure due to duplictate: status `400`, 
+        - On Failure due to duplictate: status `422`, 
             Response Body
             ```bash
                 {
@@ -112,7 +112,7 @@ The base url link for the project is [BaseUrl](https://pwg-task-list-api.herokua
                     "updated_at": "2022-02-11 05:38:47"
             }
             ```
-        - On Failure due to duplictate: status `400`, 
+        - On Failure due to duplictate: status `422`, 
             Response Body
             ```bash
                 {

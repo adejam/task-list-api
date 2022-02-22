@@ -40,7 +40,7 @@ class TaskService
         $existingTask = Task::where('label', $labelValue)->first();
         if ($existingTask) {
             if (!$this->canDuplicateTaskCanBeAdded()) {
-                abort(400, 'duplicate task cannot be added due to allow_duplicates settings');
+                abort(422, 'duplicate task cannot be added due to allow_duplicates settings');
             } else {
                 $task->label = $labelValue;
             }
@@ -72,7 +72,7 @@ class TaskService
             $existingTask = Task::where('label', $labelValue)->first();
             if ($existingTask && $existingTask->id !== $task->id) {
                 if (!$this->canDuplicateTaskCanBeAdded()) {
-                    abort(400, 'duplicate task cannot be added due to allow_duplicates settings');
+                    abort(422, 'duplicate task cannot be added due to allow_duplicates settings');
                 } else {
                     $task->label = $labelValue;
                 }
@@ -83,12 +83,12 @@ class TaskService
         }
 
         if (ArrayHelper::keyExistAndNotFalse('sort_order', $data)) {
-            $taskWithTheSortOrder = Task::where('sort_order', $data['sort_order'])->first();
+            $taskWithTheSortOrder = Task::where('sort_order', '=', $data['sort_order'])->first();
             $newOrderForTheTaskWithTheSortOrder = $task->sort_order;
 
-            if ($taskWithTheSortOrder) {
+            if ($taskWithTheSortOrder && ($task->id !== $taskWithTheSortOrder->id)) {
                 $task->sort_order = $taskWithTheSortOrder->sort_order;
-                $updatetaskWithSortOrder = Task::find($taskWithTheSortOrder->sort_order);
+                $updatetaskWithSortOrder = Task::find($taskWithTheSortOrder->id);
                 $updatetaskWithSortOrder->sort_order = $newOrderForTheTaskWithTheSortOrder;
                 $updatetaskWithSortOrder->updated_at = now();
                 $updatetaskWithSortOrder->save();

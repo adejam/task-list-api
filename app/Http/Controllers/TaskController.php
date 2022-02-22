@@ -24,7 +24,7 @@ class TaskController extends Controller
      */
     public function index(): Response
     {
-        $tasks = Task::get();
+        $tasks = Task::orderBy('sort_order')->get();
         return response(
             [
             'tasks' => $tasks,
@@ -80,6 +80,8 @@ class TaskController extends Controller
         $data = request()->validate($rules);
         
         $task = Task::find($id);
+        // $tt = Task::where('sort_order', '=', $data['sort_order'])->first();
+        // dd($task, $tt);
         if (!$task) {
             abort(404, "The page does not exist.");
         }
